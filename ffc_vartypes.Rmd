@@ -1,0 +1,22 @@
+---
+title: "metadata"
+output: html_document
+---
+
+```{r }
+setwd('D:/Downloads/FFChallenge_v5')
+library(tidyverse)
+df <- read_csv('background.csv', n_max = 5, guess_max = 5)
+df_n <- colnames(df)
+meta <- read_csv('FFMetadata20180221.csv')
+meta_new <- meta$new_name
+meta_old <- meta$old_name
+setdiff(df_n, meta_new) %>% length()
+setdiff(df_n, meta_old) %>% length()
+
+```
+
+```{r}
+meta %>% select(new_name, type) %>% write_csv('ffc_vartypes.csv')
+```
+
