@@ -18,12 +18,17 @@ def main():
 
   input_file = "./FFChallenge_v5/background.csv"
   input_data = pd.read_csv(input_file, sep=',')
-  
+ 
   cont_data = input_data[cont_vars]
-  categ_data = input_data[categ_data]
-  bin_data = input_vars[bin_data]
-  
+  categ_data = input_data[categ_vars]
+  bin_data = input_vars[bin_vars]
 
+  challenge_id = input_data["challengeID"]
+  cont_data = cont_data.fillna(cont_data.mean()) 
+  categ_data = categ_data.apply(lambda x:x.fillna(x.value_counts().index[0]))
+  bin_data = bin_data.apply(lambda x:x.fillna(x.value_counts().index[0]))
+  
+  
 
 
 
@@ -35,7 +40,6 @@ def main():
 
   numeric_cols = input_data.select_dtypes(include=['float64', 'int64']).columns.values
 
-  num_uniq_vals = input_data.nunique()
   categ_vars = num_uniq_vals[num_uniq_vals < CATEGORICAL_UNIQ_VALS].index.values
   cont_vars = num_uniq_vals[num_uniq_vals >= CATEGORICAL_UNIQ_VALS].index.values
   categ_data = input_data[categ_vars]
